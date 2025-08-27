@@ -37,7 +37,6 @@ export const searchNearbyPlace = async (
     placesService.keywordSearch(randomKeyword, callback, {
       location: new kakao.maps.LatLng(center.lat, center.lng),
       radius: 2500,
-      sort: kakao.maps.services.SortBy.DISTANCE,
     })
   })
 }
