@@ -18,6 +18,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'bingbing',
   description: '일부러 돌아가요',
+  verification: {
+    google: 'zBs1Ng1bhNf_OicTIkiWacrEk6V_WlU_8WV7svSVWtE',
+  },
 }
 
 export default function RootLayout({
