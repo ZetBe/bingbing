@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { useTransitSearch } from '@/hooks/useTransitSearch'
+import { useTransitSearch, SEARCH_LIMIT } from '@/hooks/useTransitSearch'
 import { Loader2 } from 'lucide-react'
 
 type ControlPanelProps = Pick<
@@ -16,7 +16,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
   actions,
 }) => {
   const { startPoint, endPoint } = points
-  const { clickStep, isLoading } = uiState
+  const { clickStep, isLoading, searchCount } = uiState
   const { handleSearchAndAnalyze, handleReset } = actions
 
   return (
@@ -65,6 +65,11 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
           {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           {isLoading ? '탐색 중...' : '경유 경로 분석'}
         </Button>
+        {startPoint && endPoint && (
+          <p className="text-center text-xs text-muted-foreground">
+            남은 탐색 횟수: {SEARCH_LIMIT - searchCount} / {SEARCH_LIMIT}
+          </p>
+        )}
         <Button onClick={handleReset} variant="outline" className="w-full">
           초기화
         </Button>

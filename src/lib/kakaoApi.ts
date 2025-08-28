@@ -8,7 +8,8 @@ import type { Point, Place } from '@/types'
  * @returns 검색된 장소의 좌표 또는 null
  */
 export const searchNearbyPlace = async (
-  center: Point
+  center: Point,
+  radius: number = 2500
 ): Promise<Point | null> => {
   return new Promise((resolve, reject) => {
     if (!window.kakao || !window.kakao.maps || !window.kakao.maps.services) {
@@ -17,7 +18,7 @@ export const searchNearbyPlace = async (
     }
 
     const placesService = new window.kakao.maps.services.Places()
-    const searchKeywords = ['카페', '공원', '맛집', '미술관', '지하철역']
+    const searchKeywords = ['카페', '맛집', '미술관', '지하철역']
     const randomKeyword =
       searchKeywords[Math.floor(Math.random() * searchKeywords.length)]
 
@@ -36,7 +37,7 @@ export const searchNearbyPlace = async (
 
     placesService.keywordSearch(randomKeyword, callback, {
       location: new kakao.maps.LatLng(center.lat, center.lng),
-      radius: 2500,
+      radius: radius,
     })
   })
 }
