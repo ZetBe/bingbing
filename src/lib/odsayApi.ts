@@ -1,5 +1,6 @@
 // src/lib/odsayApi.ts
 
+import { useApiKeys } from '@/context/apiKeysContext'
 import type { PathResult } from '@/types'
 
 interface FetchPathParams {
@@ -8,6 +9,7 @@ interface FetchPathParams {
   EX: string // 도착지 X좌표(경도)
   EY: string // 도착지 Y좌표(위도)
   SearchPathType: string
+  apiKey: string
 }
 
 /**
@@ -18,14 +20,8 @@ interface FetchPathParams {
 export const fetchOdsayPath = async (
   params: FetchPathParams
 ): Promise<PathResult> => {
-  const API_KEY = process.env.NEXT_PUBLIC_ODSAY_API_KEY // .env.local 파일에 키를 저장하세요
-  if (!API_KEY) {
-    throw new Error('ODsay API key is missing.')
-  }
-
   const queryString = new URLSearchParams({
     ...params,
-    apiKey: encodeURIComponent(API_KEY),
   }).toString()
 
   const url = `https://api.odsay.com/v1/api/searchPubTransPathT?${queryString}`

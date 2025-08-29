@@ -4,7 +4,6 @@ import { Map, MapMarker, CustomOverlayMap } from 'react-kakao-maps-sdk'
 import type { Point } from '@/types'
 import React from 'react'
 
-// ✨ 새로운 카드 스타일의 라벨 컴포넌트
 const PointMarkerLabel: React.FC<{ label: string }> = ({ label }) => {
   return (
     <div className="flex flex-col items-center">
@@ -18,7 +17,6 @@ const PointMarkerLabel: React.FC<{ label: string }> = ({ label }) => {
   )
 }
 
-// ✨ PointMarker가 새로운 라벨 컴포넌트를 사용하도록 수정
 const PointMarker: React.FC<{
   position: Point
   label: string
@@ -27,7 +25,7 @@ const PointMarker: React.FC<{
   return (
     <>
       {/* 마커 위에 표시될 커스텀 라벨 */}
-      <CustomOverlayMap position={position} yAnchor={2.2}>
+      <CustomOverlayMap position={position} yAnchor={1}>
         <PointMarkerLabel label={label} />
       </CustomOverlayMap>
     </>

@@ -1,8 +1,10 @@
 // src/components/ControlPanel.tsx
+'use client'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useTransitSearch, SEARCH_LIMIT } from '@/hooks/useTransitSearch'
+import { useApiKeys } from '@/context/apiKeysContext'
 import { Loader2 } from 'lucide-react'
 
 type ControlPanelProps = Pick<
@@ -18,6 +20,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
   const { startPoint, endPoint } = points
   const { clickStep, isLoading, searchCount } = uiState
   const { handleSearchAndAnalyze, handleReset } = actions
+  const apiKey = useApiKeys()
 
   return (
     <div className="flex flex-col gap-4">
@@ -58,7 +61,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
 
       <div className="space-y-2">
         <Button
-          onClick={handleSearchAndAnalyze}
+          onClick={() => handleSearchAndAnalyze(apiKey.odsayApiKey)}
           disabled={isLoading || !startPoint || !endPoint}
           className="w-full"
         >

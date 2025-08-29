@@ -5,6 +5,7 @@ import type { PathResult, Point, ClickStep, ProcessedResult } from '@/types'
 import { fetchOdsayPath } from '@/lib/odsayApi'
 import { searchNearbyPlace } from '@/lib/kakaoApi'
 import { getDetourSearchCenter, getDistance } from '@/lib/utils'
+import { useApiKeys } from '@/context/apiKeysContext'
 
 const MAX_WAYPOINT_SEARCH_ATTEMPTS = 10
 export const SEARCH_LIMIT = 5 // ✨ 출발-도착지 당 최대 탐색 횟수
@@ -19,7 +20,6 @@ export const useTransitSearch = () => {
     useState<ProcessedResult | null>(null)
   const [selectedPathIndex1, setSelectedPathIndex1] = useState<number>(0)
   const [selectedPathIndex2, setSelectedPathIndex2] = useState<number>(0)
-  // ✨ 현재 경로에 대한 탐색 횟수를 저장하는 상태
   const [searchCount, setSearchCount] = useState(0)
 
   const handleMapClick = (
@@ -39,7 +39,7 @@ export const useTransitSearch = () => {
       setEndPoint(null)
       setProcessedResults(null)
       setClickStep('end')
-      setSearchCount(0) // ✨ 새로운 출발지를 찍으면 탐색 횟수 초기화
+      setSearchCount(0)
     } else if (clickStep === 'end') {
       setEndPoint(newPoint)
       setClickStep('done')
@@ -63,8 +63,7 @@ export const useTransitSearch = () => {
     setSelectedPathIndex2(0)
   }
 
-  const handleSearchAndAnalyze = async (): Promise<void> => {
-    // ✨ 탐색 시작 전, 횟수 제한을 확인
+  const handleSearchAndAnalyze = async (apiKey: string): Promise<void> => {
     if (searchCount >= SEARCH_LIMIT) {
       alert(
         `경유지 탐색은 출발-도착지마다 ${SEARCH_LIMIT}번까지만 가능합니다.\n다른 지점을 선택하시거나 초기화 후 다시 시도해주세요.`
@@ -114,6 +113,7 @@ export const useTransitSearch = () => {
           EX: foundWaypoint.lng.toString(),
           EY: foundWaypoint.lat.toString(),
           SearchPathType: '2',
+          apiKey: apiKey,
         }),
         fetchOdsayPath({
           SX: foundWaypoint.lng.toString(),
@@ -121,6 +121,7 @@ export const useTransitSearch = () => {
           EX: endPoint.lng.toString(),
           EY: endPoint.lat.toString(),
           SearchPathType: '2',
+          apiKey: apiKey,
         }),
       ])
 
